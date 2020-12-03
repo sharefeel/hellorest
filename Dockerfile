@@ -5,6 +5,7 @@ COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 
 # Package stage
-FROM gcr.io/distroless/java:11
-COPY --from=build target/hellorest-github.jar /usr/local/lib/app.jar
+FROM openjdk:11.0.9.1-jre-slim
+COPY --from=build /home/app/target/hellorest-rest.jar /usr/local/lib/app.jar
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
