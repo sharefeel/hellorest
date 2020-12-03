@@ -22,7 +22,7 @@ public class HelloRestApp {
     public ResponseEntity<String> hello() throws UnknownHostException {
         String localAddress = InetAddress.getLocalHost().getHostAddress();
         String localHostName = InetAddress.getLocalHost().getHostName();
-        return ResponseEntity.ok("Version 6. I am " + localHostName + "(" + localAddress + ") ");
+        return ResponseEntity.ok("Version 7. I am " + localHostName + "(" + localAddress + ") ");
     }
 
     @GetMapping("alive")
