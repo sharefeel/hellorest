@@ -6,6 +6,6 @@ RUN mvn -f /home/app/pom.xml clean package
 
 # Package stage
 FROM openjdk:11.0.9.1-jre-slim
-COPY --from=build /home/app/target/hellorest-rest.jar /usr/local/lib/app.jar
+COPY --from=build /home/app/target/hellorest-github.jar /usr/local/lib/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
