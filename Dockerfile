@@ -6,5 +6,5 @@ RUN mvn -f /home/app/pom.xml clean package
 
 # Package stage
 FROM gcr.io/distroless/java:11
-COPY target/hellorest-github.jar /usr/local/lib/app.jar
+COPY --from=build target/hellorest-github.jar /usr/local/lib/app.jar
 ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
