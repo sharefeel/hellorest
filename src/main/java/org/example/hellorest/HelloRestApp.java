@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 @RequestMapping("/")
 @SpringBootApplication
 public class HelloRestApp {
+
     public static void main(String... args) {
         SpringApplication.run(HelloRestApp.class);
     }
