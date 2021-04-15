@@ -1,10 +1,10 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'asia.gcr.io/${PROJECT}/${_ARTIFACT}', '.' ]
+    args: [ 'build', '-t', 'asia.gcr.io/${_PROJECT}/${_ARTIFACT}', '.' ]
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', 'asia.gcr.io/${PROJECT}/${_ARTIFACT}' ]
+    args: [ 'push', 'asia.gcr.io/${_PROJECT}/${_ARTIFACT}' ]
   # Deploy
   - name: gcr.io/cloud-builders/gcloud
     env:
