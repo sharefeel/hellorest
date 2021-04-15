@@ -27,6 +27,6 @@ steps:
         kubectl get ns $${_NAMESPACE} || kubectl create ns $${_NAMESPACE}
 
         kubectl set image deployment/$${_ARTIFACT} -n $${_NAMESPACE} \
-          $${_ARTIFACT}=gcr.io/$PROJECT_ID/$${_ARTIFACT}:$(cat $${_ARTIFACT}/_TAG) \
+          $${_ARTIFACT}=gcr.io/$PROJECT_ID/$${_ARTIFACT} \
           --record
     entrypoint: bash
