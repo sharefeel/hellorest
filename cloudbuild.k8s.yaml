@@ -1,0 +1,32 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'asia.gcr.io/${_PROJECT}/${_ARTIFACT}', '.' ]
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'asia.gcr.io/${_PROJECT}/${_ARTIFACT}' ]
+  # Deploy
+  - name: gcr.io/cloud-builders/gcloud
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_CLOUDSDK_COMPUTE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+      - KUBECONFIG=/kube/config
+    args:
+      - '-c'
+      - |
+        CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}
+
+        PROJECT=$$(gcloud config get-value core/project)
+
+        REGION=${_CLOUDSDK_COMPUTE_REGION}
+
+        gcloud container clusters get-credentials "$${CLUSTER}" \
+          --project "$${PROJECT}" \
+          --region "$${REGION}"
+
+        kubectl get ns $${_NAMESPACE} || kubectl create ns $${_NAMESPACE}
+
+        kubectl set image deployment/$${_ARTIFACT} -n $${_NAMESPACE} \
+          $${_ARTIFACT}=asia.gcr.io/$PROJECT_ID/$${_ARTIFACT} \
+          --record
+    entrypoint: bash
