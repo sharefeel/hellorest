@@ -1,0 +1,14 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'asia.gcr.io/${_PROJECT}/${_ARTIFACT}', '.' ]
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'asia.gcr.io/${_PROJECT}/${_ARTIFACT}' ]
+  # Deploy
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - '-c'
+      - |
+        gcloud beta compute ssh youngrok@gke-controller --zone asia-northeast3-a --command='kubectl rollout restart deployment/hellorest'
+    entrypoint: bash
